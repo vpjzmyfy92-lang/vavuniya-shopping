@@ -439,7 +439,11 @@ if (savedCart) {
 
 <p id="adminMessage"></p>
 
+<h3>My Saved Products</h3>
+<div id="savedProducts"></div>
+
 <script>
+  
 function addNewProduct() {
     let name = document.getElementById("newName").value;
     let price = Number(document.getElementById("newPrice").value);
@@ -465,6 +469,22 @@ function addNewProduct() {
     document.getElementById("newName").value = "";
     document.getElementById("newPrice").value = "";
 }
+function showSavedProducts() {
+    let products = JSON.parse(localStorage.getItem("myProducts")) || [];
+
+    let output = "";
+
+    products.forEach(function(product, index) {
+        output += `
+            <p>${index + 1}. ${product.name} - Rs.${product.price}</p>
+        `;
+    });
+
+    document.getElementById("savedProducts").innerHTML =
+        output || "No products added yet.";
+}
+
+showSavedProducts();
 </script>
 </body>
 </html>

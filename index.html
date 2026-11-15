@@ -421,5 +421,50 @@ if (savedCart) {
 
 </script>
 
+<hr>
+
+<h2>🔐 Shop Owner Dashboard</h2>
+
+<h3>Add New Product</h3>
+
+<input type="text" id="newName" placeholder="Product Name">
+
+<br><br>
+
+<input type="number" id="newPrice" placeholder="Product Price">
+
+<br><br>
+
+<button onclick="addNewProduct()">Add Product</button>
+
+<p id="adminMessage"></p>
+
+<script>
+function addNewProduct() {
+    let name = document.getElementById("newName").value;
+    let price = Number(document.getElementById("newPrice").value);
+
+    if (name === "" || price <= 0) {
+        document.getElementById("adminMessage").innerText =
+            "Please enter product name and valid price.";
+        return;
+    }
+
+    let products = JSON.parse(localStorage.getItem("myProducts")) || [];
+
+    products.push({
+        name: name,
+        price: price
+    });
+
+    localStorage.setItem("myProducts", JSON.stringify(products));
+
+    document.getElementById("adminMessage").innerText =
+        "Product saved successfully!";
+
+    document.getElementById("newName").value = "";
+    document.getElementById("newPrice").value = "";
+}
+</script>
 </body>
 </html>

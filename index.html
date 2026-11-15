@@ -198,6 +198,58 @@ button {
 <div id="savedProducts"></div>
 
 </div>
+  // EDIT PRODUCT PRICE
+function editProduct(index) {
+
+  let products = JSON.parse(
+    localStorage.getItem("myProducts") || "[]"
+  );
+
+  let newPrice = prompt(
+    "Enter new price for " + products[index].name,
+    products[index].price
+  );
+
+  if (newPrice === null) return;
+
+  newPrice = Number(newPrice);
+
+  if (!Number.isFinite(newPrice) || newPrice <= 0) {
+    alert("Enter a valid price!");
+    return;
+  }
+
+  products[index].price = newPrice;
+
+  localStorage.setItem("myProducts", JSON.stringify(products));
+
+  showSavedProducts();
+  showStoreProducts();
+
+  alert("Price updated successfully!");
+}
+
+
+// DELETE PRODUCT
+function deleteProduct(index) {
+
+  let products = JSON.parse(
+    localStorage.getItem("myProducts") || "[]"
+  );
+
+  if (!confirm("Do you want to delete this product?")) {
+    return;
+  }
+
+  products.splice(index, 1);
+
+  localStorage.setItem("myProducts", JSON.stringify(products));
+
+  showSavedProducts();
+  showStoreProducts();
+
+  alert("Product deleted successfully!");
+}
 
 <script>
 

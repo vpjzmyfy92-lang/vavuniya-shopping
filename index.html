@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>Vavuniya Shopping</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -24,14 +23,6 @@ body {
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-}
-
-.header h1 {
-  margin: 5px;
-}
-
-.header p {
-  margin: 5px;
 }
 
 input, textarea {
@@ -68,16 +59,8 @@ button {
   margin: 5px;
 }
 
-button:hover {
-  background: darkgreen;
-}
-
 .clear {
   background: red;
-}
-
-.clear:hover {
-  background: darkred;
 }
 
 #cartDetails {
@@ -87,157 +70,140 @@ button:hover {
   padding: 15px;
   border-radius: 10px;
 }
+
+.dashboard {
+  background: white;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 12px;
+}
 </style>
 </head>
 
 <body>
-
-<!-- HEADER -->
 
 <div class="header">
   <h1>🛍️ Vavuniya Shopping</h1>
   <p>Your Local Online Shopping Store</p>
 </div>
 
-<!-- SEARCH -->
-
 <input
-type="text"
-id="search"
-placeholder="Search Products..."
-onkeyup="searchProducts()"
+  type="text"
+  id="search"
+  placeholder="Search Products..."
+  onkeyup="searchProducts()"
 >
 
-<!-- RICE -->
+<h2>🛒 Available Products</h2>
+
+<!-- EXISTING PRODUCTS -->
 
 <div class="product">
-
-<img src="https://placehold.co/200x120?text=Rice">
-
-<h2>Rice</h2>
-
-<p>Rs. 250</p>
-
-<input type="number" id="riceQty" value="1" min="1">
-
-<br>
-
-<button onclick="addToCart('Rice',250,'riceQty')">
-Buy Now
-</button>
-
+  <img src="https://placehold.co/200x120?text=Rice">
+  <h2>Rice</h2>
+  <p>Rs. 250</p>
+  <input type="number" id="riceQty" value="1" min="1">
+  <button onclick="addToCart('Rice',250,'riceQty')">
+    Buy Now
+  </button>
 </div>
-
-<!-- SUGAR -->
 
 <div class="product">
-
-<img src="https://placehold.co/200x120?text=Sugar">
-
-<h2>Sugar</h2>
-
-<p>Rs. 300</p>
-
-<input type="number" id="sugarQty" value="1" min="1">
-
-<br>
-
-<button onclick="addToCart('Sugar',300,'sugarQty')">
-Buy Now
-</button>
-
+  <img src="https://placehold.co/200x120?text=Sugar">
+  <h2>Sugar</h2>
+  <p>Rs. 300</p>
+  <input type="number" id="sugarQty" value="1" min="1">
+  <button onclick="addToCart('Sugar',300,'sugarQty')">
+    Buy Now
+  </button>
 </div>
-
-<!-- MILK POWDER -->
 
 <div class="product">
-
-<img src="https://placehold.co/200x120?text=Milk+Powder">
-
-<h2>Milk Powder</h2>
-
-<p>Rs. 500</p>
-
-<input type="number" id="milkQty" value="1" min="1">
-
-<br>
-
-<button onclick="addToCart('Milk Powder',500,'milkQty')">
-Buy Now
-</button>
-
+  <img src="https://placehold.co/200x120?text=Milk+Powder">
+  <h2>Milk Powder</h2>
+  <p>Rs. 500</p>
+  <input type="number" id="milkQty" value="1" min="1">
+  <button onclick="addToCart('Milk Powder',500,'milkQty')">
+    Buy Now
+  </button>
 </div>
+
+<!-- NEW PRODUCTS WILL APPEAR HERE -->
+
+<div id="newStoreProducts"></div>
 
 <!-- CART -->
 
 <h2>🛒 My Cart</h2>
 
 <p>Items: <span id="count">0</span></p>
-
 <p>Total: Rs. <span id="total">0</span></p>
 
 <h3>Order Details</h3>
 
 <div id="cartDetails">
-No products added yet.
+  No products added yet.
 </div>
 
 <br>
 
 <button class="clear" onclick="clearCart()">
-Clear Cart
+  Clear Cart
 </button>
 
 <!-- CUSTOMER DETAILS -->
 
 <h2>📦 Customer Details</h2>
 
-<input
-type="text"
-id="customerName"
-placeholder="Your Name"
->
+<input type="text" id="customerName" placeholder="Your Name">
 
 <br>
 
-<input
-type="tel"
-id="customerPhone"
-placeholder="Phone Number"
->
+<input type="tel" id="customerPhone" placeholder="Phone Number">
 
 <br>
 
-<textarea
-id="customerAddress"
-placeholder="Delivery Address"
-></textarea>
+<textarea id="customerAddress" placeholder="Delivery Address"></textarea>
 
 <br>
 
 <button onclick="placeOrder()">
-Place Order on WhatsApp
+  Place Order on WhatsApp
 </button>
 
-<!-- JAVASCRIPT -->
+<!-- DASHBOARD -->
+
+<div class="dashboard">
+
+<h2>🔐 Shop Owner Dashboard</h2>
+
+<h3>Add New Product</h3>
+
+<input type="text" id="newName" placeholder="Product Name">
+
+<br>
+
+<input type="number" id="newPrice" placeholder="Product Price">
+
+<br>
+
+<button onclick="addNewProduct()">
+  Add Product
+</button>
+
+<p id="adminMessage"></p>
+
+<h3>My Saved Products</h3>
+
+<div id="savedProducts"></div>
+
+</div>
 
 <script>
 
 let cart = 0;
 let total = 0;
 let cartItems = {};
-
-// SAVE CART
-
-function saveCart() {
-
-  localStorage.setItem("vavuniyaCart", JSON.stringify({
-    cart: cart,
-    total: total,
-    cartItems: cartItems
-  }));
-
-}
 
 // ADD TO CART
 
@@ -262,12 +228,10 @@ function addToCart(name, price, quantityId) {
   }
 
   updateCart();
-
   saveCart();
-
 }
 
-// UPDATE CART DISPLAY
+// UPDATE CART
 
 function updateCart() {
 
@@ -278,14 +242,166 @@ function updateCart() {
   let details = "";
 
   for (let product in cartItems) {
-
     details += "<p>" + product + " - " +
     cartItems[product] + " items</p>";
-
   }
 
   document.getElementById("cartDetails").innerHTML =
     details || "No products added yet.";
+}
+
+// SAVE CART
+
+function saveCart() {
+
+  localStorage.setItem("vavuniyaCart", JSON.stringify({
+    cart: cart,
+    total: total,
+    cartItems: cartItems
+  }));
+
+}
+
+// LOAD CART
+
+function loadCart() {
+
+  let savedCart = localStorage.getItem("vavuniyaCart");
+
+  if (savedCart) {
+
+    try {
+
+      let data = JSON.parse(savedCart);
+
+      cart = data.cart || 0;
+      total = data.total || 0;
+      cartItems = data.cartItems || {};
+
+      updateCart();
+
+    } catch (error) {
+
+      localStorage.removeItem("vavuniyaCart");
+
+    }
+  }
+}
+
+// ADD NEW PRODUCT
+
+function addNewProduct() {
+
+  let name = document.getElementById("newName").value.trim();
+
+  let price = Number(document.getElementById("newPrice").value);
+
+  if (name === "" || !Number.isFinite(price) || price <= 0) {
+
+    document.getElementById("adminMessage").innerText =
+      "Please enter product name and valid price.";
+
+    return;
+  }
+
+  let products = JSON.parse(
+    localStorage.getItem("myProducts") || "[]"
+  );
+
+  products.push({
+    name: name,
+    price: price
+  });
+
+  localStorage.setItem("myProducts", JSON.stringify(products));
+
+  document.getElementById("adminMessage").innerText =
+    "Product added successfully!";
+
+  document.getElementById("newName").value = "";
+
+  document.getElementById("newPrice").value = "";
+
+  // UPDATE BOTH LISTS
+
+  showSavedProducts();
+  showStoreProducts();
+}
+
+// SHOW PRODUCTS IN DASHBOARD
+
+function showSavedProducts() {
+
+  let products = JSON.parse(
+    localStorage.getItem("myProducts") || "[]"
+  );
+
+  let output = "";
+
+  products.forEach(function(product, index) {
+
+    output += `
+      <p>${index + 1}. ${product.name} - Rs.${product.price}</p>
+    `;
+
+  });
+
+  document.getElementById("savedProducts").innerHTML =
+    output || "No products added yet.";
+}
+
+// SHOW NEW PRODUCTS IN SHOPPING STORE
+
+function showStoreProducts() {
+
+  let products = JSON.parse(
+    localStorage.getItem("myProducts") || "[]"
+  );
+
+  let container = document.getElementById("newStoreProducts");
+
+  container.innerHTML = "";
+
+  products.forEach(function(product, index) {
+
+    let card = document.createElement("div");
+
+    card.className = "product";
+
+    let title = document.createElement("h2");
+    title.textContent = product.name;
+
+    let price = document.createElement("p");
+    price.textContent = "Rs. " + product.price;
+
+    let quantity = document.createElement("input");
+    quantity.type = "number";
+    quantity.value = "1";
+    quantity.min = "1";
+    quantity.id = "newQty" + index;
+
+    let button = document.createElement("button");
+    button.textContent = "Buy Now";
+
+    button.addEventListener("click", function() {
+
+      addToCart(
+        product.name,
+        product.price,
+        quantity.id
+      );
+
+    });
+
+    card.appendChild(title);
+    card.appendChild(price);
+    card.appendChild(quantity);
+    card.appendChild(document.createElement("br"));
+    card.appendChild(button);
+
+    container.appendChild(card);
+
+  });
 
 }
 
@@ -294,7 +410,7 @@ function updateCart() {
 function searchProducts() {
 
   let input = document.getElementById("search")
-  .value.toLowerCase();
+    .value.toLowerCase();
 
   let products = document.getElementsByClassName("product");
 
@@ -302,14 +418,10 @@ function searchProducts() {
 
     let name = products[i].innerText.toLowerCase();
 
-    if (name.includes(input)) {
-      products[i].style.display = "block";
-    } else {
-      products[i].style.display = "none";
-    }
+    products[i].style.display =
+      name.includes(input) ? "block" : "none";
 
   }
-
 }
 
 // CLEAR CART
@@ -321,7 +433,6 @@ function clearCart() {
   cartItems = {};
 
   updateCart();
-
   saveCart();
 
   alert("Cart cleared successfully!");
@@ -341,7 +452,6 @@ function placeOrder() {
   if (name === "" || phone === "" || address === "") {
 
     alert("Please fill all customer details!");
-
     return;
 
   }
@@ -349,25 +459,17 @@ function placeOrder() {
   if (cart === 0) {
 
     alert("Please add products to cart!");
-
     return;
 
   }
 
-  // CREATE ORDER ID
-
   let orderId = "VAV" + Date.now();
-
-  // ORDER MESSAGE
 
   let message = "🛍️ NEW ORDER\n\n";
 
   message += "Order ID: " + orderId + "\n";
-
   message += "Customer: " + name + "\n";
-
   message += "Phone: " + phone + "\n";
-
   message += "Address: " + address + "\n\n";
 
   message += "ORDER ITEMS:\n";
@@ -381,8 +483,6 @@ function placeOrder() {
 
   message += "\nTotal: Rs. " + total;
 
-  // YOUR BUSINESS WHATSAPP NUMBER
-
   let businessNumber = "94777547953";
 
   let whatsappURL =
@@ -393,99 +493,13 @@ function placeOrder() {
 
 }
 
-// LOAD SAVED CART
+// LOAD EVERYTHING WHEN WEBSITE OPENS
 
-let savedCart = localStorage.getItem("vavuniyaCart");
-
-if (savedCart) {
-
-  try {
-
-    let data = JSON.parse(savedCart);
-
-    cart = data.cart || 0;
-
-    total = data.total || 0;
-
-    cartItems = data.cartItems || {};
-
-    updateCart();
-
-  } catch (error) {
-
-    localStorage.removeItem("vavuniyaCart");
-
-  }
-
-}
-
-</script>
-
-<hr>
-
-<h2>🔐 Shop Owner Dashboard</h2>
-
-<h3>Add New Product</h3>
-
-<input type="text" id="newName" placeholder="Product Name">
-
-<br><br>
-
-<input type="number" id="newPrice" placeholder="Product Price">
-
-<br><br>
-
-<button onclick="addNewProduct()">Add Product</button>
-
-<p id="adminMessage"></p>
-
-<h3>My Saved Products</h3>
-<div id="savedProducts"></div>
-
-<script>
-  
-function addNewProduct() {
-    let name = document.getElementById("newName").value;
-    let price = Number(document.getElementById("newPrice").value);
-  showSavedProducts();
-
-    if (name === "" || price <= 0) {
-        document.getElementById("adminMessage").innerText =
-            "Please enter product name and valid price.";
-        return;
-    }
-
-    let products = JSON.parse(localStorage.getItem("myProducts")) || [];
-
-    products.push({
-        name: name,
-        price: price
-    });
-
-    localStorage.setItem("myProducts", JSON.stringify(products));
-
-    document.getElementById("adminMessage").innerText =
-        "Product saved successfully!";
-
-    document.getElementById("newName").value = "";
-    document.getElementById("newPrice").value = "";
-}
-function showSavedProducts() {
-    let products = JSON.parse(localStorage.getItem("myProducts")) || [];
-
-    let output = "";
-
-    products.forEach(function(product, index) {
-        output += `
-            <p>${index + 1}. ${product.name} - Rs.${product.price}</p>
-        `;
-    });
-
-    document.getElementById("savedProducts").innerHTML =
-        output || "No products added yet.";
-}
-
+loadCart();
 showSavedProducts();
+showStoreProducts();
+
 </script>
+
 </body>
 </html>

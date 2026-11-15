@@ -330,7 +330,7 @@ function addNewProduct() {
 
 // SHOW PRODUCTS IN DASHBOARD
 
-function showSavedProducts() {
+  function showSavedProducts() {
 
   let products = JSON.parse(
     localStorage.getItem("myProducts") || "[]"
@@ -341,7 +341,18 @@ function showSavedProducts() {
   products.forEach(function(product, index) {
 
     output += `
-      <p>${index + 1}. ${product.name} - Rs.${product.price}</p>
+      <div class="product">
+        <h3>${product.name}</h3>
+        <p>Rs. ${product.price}</p>
+
+        <button onclick="editProduct(${index})">
+          Edit Price
+        </button>
+
+        <button onclick="deleteProduct(${index})" class="clear">
+          Delete
+        </button>
+      </div>
     `;
 
   });

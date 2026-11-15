@@ -447,6 +447,7 @@ if (savedCart) {
 function addNewProduct() {
     let name = document.getElementById("newName").value;
     let price = Number(document.getElementById("newPrice").value);
+  showSavedProducts();
 
     if (name === "" || price <= 0) {
         document.getElementById("adminMessage").innerText =

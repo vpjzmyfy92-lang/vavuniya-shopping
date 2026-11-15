@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vavuniya Shopping</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  background: #f0f4f8;
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+}
+
+.header {
+  background: green;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 5px;
+}
+
+.header p {
+  margin: 5px;
+}
+
+input, textarea {
+  padding: 12px;
+  width: 80%;
+  max-width: 400px;
+  margin: 10px;
+  border-radius: 8px;
+  border: 1px solid gray;
+}
+
+.product {
+  background: white;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  background: green;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
+
+button:hover {
+  background: darkgreen;
+}
+
+.clear {
+  background: red;
+}
+
+.clear:hover {
+  background: darkred;
+}
+
+#cartDetails {
+  background: white;
+  max-width: 400px;
+  margin: auto;
+  padding: 15px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+  <h1>🛍️ Vavuniya Shopping</h1>
+  <p>Your Local Online Shopping Store</p>
+</div>
+
+<!-- SEARCH -->
+
+<input
+type="text"
+id="search"
+placeholder="Search Products..."
+onkeyup="searchProducts()"
+>
+
+<!-- RICE -->
+
+<div class="product">
+
+<img src="https://placehold.co/200x120?text=Rice">
+
+<h2>Rice</h2>
+
+<p>Rs. 250</p>
+
+<input type="number" id="riceQty" value="1" min="1">
+
+<br>
+
+<button onclick="addToCart('Rice',250,'riceQty')">
+Buy Now
+</button>
+
+</div>
+
+<!-- SUGAR -->
+
+<div class="product">
+
+<img src="https://placehold.co/200x120?text=Sugar">
+
+<h2>Sugar</h2>
+
+<p>Rs. 300</p>
+
+<input type="number" id="sugarQty" value="1" min="1">
+
+<br>
+
+<button onclick="addToCart('Sugar',300,'sugarQty')">
+Buy Now
+</button>
+
+</div>
+
+<!-- MILK POWDER -->
+
+<div class="product">
+
+<img src="https://placehold.co/200x120?text=Milk+Powder">
+
+<h2>Milk Powder</h2>
+
+<p>Rs. 500</p>
+
+<input type="number" id="milkQty" value="1" min="1">
+
+<br>
+
+<button onclick="addToCart('Milk Powder',500,'milkQty')">
+Buy Now
+</button>
+
+</div>
+
+<!-- CART -->
+
+<h2>🛒 My Cart</h2>
+
+<p>Items: <span id="count">0</span></p>
+
+<p>Total: Rs. <span id="total">0</span></p>
+
+<h3>Order Details</h3>
+
+<div id="cartDetails">
+No products added yet.
+</div>
+
+<br>
+
+<button class="clear" onclick="clearCart()">
+Clear Cart
+</button>
+
+<!-- CUSTOMER DETAILS -->
+
+<h2>📦 Customer Details</h2>
+
+<input
+type="text"
+id="customerName"
+placeholder="Your Name"
+>
+
+<br>
+
+<input
+type="tel"
+id="customerPhone"
+placeholder="Phone Number"
+>
+
+<br>
+
+<textarea
+id="customerAddress"
+placeholder="Delivery Address"
+></textarea>
+
+<br>
+
+<button onclick="placeOrder()">
+Place Order on WhatsApp
+</button>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+let cart = 0;
+let total = 0;
+let cartItems = {};
+
+// SAVE CART
+
+function saveCart() {
+
+  localStorage.setItem("vavuniyaCart", JSON.stringify({
+    cart: cart,
+    total: total,
+    cartItems: cartItems
+  }));
+
+}
+
+// ADD TO CART
+
+function addToCart(name, price, quantityId) {
+
+  let quantity = Number(
+    document.getElementById(quantityId).value
+  );
+
+  if (!Number.isInteger(quantity) || quantity < 1) {
+    alert("Enter a valid quantity!");
+    return;
+  }
+
+  cart += quantity;
+  total += price * quantity;
+
+  if (cartItems[name]) {
+    cartItems[name] += quantity;
+  } else {
+    cartItems[name] = quantity;
+  }
+
+  updateCart();
+
+  saveCart();
+
+}
+
+// UPDATE CART DISPLAY
+
+function updateCart() {
+
+  document.getElementById("count").innerText = cart;
+
+  document.getElementById("total").innerText = total;
+
+  let details = "";
+
+  for (let product in cartItems) {
+
+    details += "<p>" + product + " - " +
+    cartItems[product] + " items</p>";
+
+  }
+
+  document.getElementById("cartDetails").innerHTML =
+    details || "No products added yet.";
+
+}
+
+// SEARCH PRODUCTS
+
+function searchProducts() {
+
+  let input = document.getElementById("search")
+  .value.toLowerCase();
+
+  let products = document.getElementsByClassName("product");
+
+  for (let i = 0; i < products.length; i++) {
+
+    let name = products[i].innerText.toLowerCase();
+
+    if (name.includes(input)) {
+      products[i].style.display = "block";
+    } else {
+      products[i].style.display = "none";
+    }
+
+  }
+
+}
+
+// CLEAR CART
+
+function clearCart() {
+
+  cart = 0;
+  total = 0;
+  cartItems = {};
+
+  updateCart();
+
+  saveCart();
+
+  alert("Cart cleared successfully!");
+
+}
+
+// PLACE ORDER
+
+function placeOrder() {
+
+  let name = document.getElementById("customerName").value.trim();
+
+  let phone = document.getElementById("customerPhone").value.trim();
+
+  let address = document.getElementById("customerAddress").value.trim();
+
+  if (name === "" || phone === "" || address === "") {
+
+    alert("Please fill all customer details!");
+
+    return;
+
+  }
+
+  if (cart === 0) {
+
+    alert("Please add products to cart!");
+
+    return;
+
+  }
+
+  // CREATE ORDER ID
+
+  let orderId = "VAV" + Date.now();
+
+  // ORDER MESSAGE
+
+  let message = "🛍️ NEW ORDER\n\n";
+
+  message += "Order ID: " + orderId + "\n";
+
+  message += "Customer: " + name + "\n";
+
+  message += "Phone: " + phone + "\n";
+
+  message += "Address: " + address + "\n\n";
+
+  message += "ORDER ITEMS:\n";
+
+  for (let product in cartItems) {
+
+    message += product + " - " +
+    cartItems[product] + " items\n";
+
+  }
+
+  message += "\nTotal: Rs. " + total;
+
+  // YOUR BUSINESS WHATSAPP NUMBER
+
+  let businessNumber = "94777547953";
+
+  let whatsappURL =
+    "https://wa.me/" + businessNumber +
+    "?text=" + encodeURIComponent(message);
+
+  window.open(whatsappURL, "_blank");
+
+}
+
+// LOAD SAVED CART
+
+let savedCart = localStorage.getItem("vavuniyaCart");
+
+if (savedCart) {
+
+  try {
+
+    let data = JSON.parse(savedCart);
+
+    cart = data.cart || 0;
+
+    total = data.total || 0;
+
+    cartItems = data.cartItems || {};
+
+    updateCart();
+
+  } catch (error) {
+
+    localStorage.removeItem("vavuniyaCart");
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
